@@ -196,7 +196,7 @@
 
     $.fn.googleTranslate.build = function(){
         var $htm = $(`<div class="dropdown lang-menu translation-links">
-            <button class="dropdown-toggle" type="button" id="googleTranslateDrop" data-toggle="dropdown" aria-haspopup="true"aria-expanded="true">EN<i class="icon ion-chevron-down"></i></button><ul class="dropdown-menu" aria-labelledby="googleTranslateDrop"></ul>
+            <button class="dropdown-toggle btn btn-default btn-sm" type="button" id="googleTranslateDrop" data-toggle="dropdown" aria-haspopup="true"aria-expanded="true">EN<i class="icon ion-chevron-down"></i></button><ul class="dropdown-menu" aria-labelledby="googleTranslateDrop"></ul>
         </div>`);
         var $list = '<li><a href="#" data-lang="{{lang}}">{{label}}</a></li>';
         var $ul = $htm.find('ul');
