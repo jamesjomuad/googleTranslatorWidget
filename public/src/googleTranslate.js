@@ -3,9 +3,10 @@
 */
 ;(function($){
     "use strict";
+    var settings;
 
     $.fn.googleTranslate = function(options){
-        var settings = $.extend({
+        settings = $.extend({
             // default options.
             default:'en',
             lang: ['en','fr','de','es','pt-BR','zh-CN','no','da','sv'],
@@ -159,7 +160,8 @@
         $.fn.googleTranslate.init();
         console.log($(this))
         console.log(settings)
-        $(this).html($.fn.googleTranslate.build())
+        $(this).after($.fn.googleTranslate.build())
+        $(this).remove();
     };
 
     $.fn.googleTranslate.helper = {
@@ -202,18 +204,26 @@
         var $ul = $htm.find('ul');
 
         $ul.on('updatedList',function ( event, data ) {
-            $ul.html($.map( data, function ( v ) {
+            var list = $.map( data, function ( v ) {
                 return $list.replace( /{{label}}/, v.label ).replace( /{{lang}}/, v.lang );
-            }));
+            });
+            $ul.html(list);
         })
+        
+        console.log(settings.lang.constructor==Array)
+        
+        // if(typeof settings.lang=='object')
+        // var getOptions = $.map(settings.lang,function(v){
+        //     return {
+        //         lang:v,
+        //         label:settings.languages[v]
+        //     };
+        // })
 
-        $ul.trigger( "updatedList", [[ 
-            {label:'tsdfasdf',lang:'en'},
-            {label:'French',lang:'fr'}
-        ]]);
+        // $ul.trigger( "updatedList", [getOptions]);
 
         return $htm;
     }
 
-    return $;
+    return this;
 })(jQuery)

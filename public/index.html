@@ -10,8 +10,7 @@
     
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="  crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <script src="../src/googleTranslate.js"></script>
-    
+    <script src="./src/googleTranslate.js"></script>
 </head>
 <body>
     <div class="container">
@@ -42,9 +41,9 @@
                         <li role="separator" class="divider"></li>
                         <li><a href="#">Separated link</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#">One more separated link</a></li>
                     </ul>
                     </li>
+                    <li><a href="#">Link</a></li>
                 </ul>
                 <form class="navbar-form navbar-left">
                     <div class="form-group">
@@ -53,7 +52,8 @@
                     <button type="submit" class="btn btn-default">Submit</button>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li id="gTranslate" class="dropdown">
+                    <li>
+                        <div id="gTranslate"></div>
                     </li>
                 </ul>
                 </div><!-- /.navbar-collapse -->
@@ -76,5 +76,14 @@
         <p>Supplied directly pleasant we ignorant ecstatic of jointure so if. These spoke house of we. Ask put yet excuse person see change. Do inhabiting no stimulated unpleasing of admiration he. Enquire explain another he in brandon enjoyed be service. Given mrs she first china. Table party no or trees an while it since. On oh celebrated at be announcing dissimilar insipidity. Ham marked engage oppose cousin ask add yet.</p>
         <p>&nbsp;</p>
     </div>
+
+    <script>
+        $('#gTranslate').googleTranslate({
+            // lang:['en','fr']
+            lang:[
+                {}
+            ]
+        });
+    </script>
 </body>
 </html>

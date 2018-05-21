@@ -1,0 +1,13 @@
+{
+  "name": "jamesjomuad",
+  "version": "1.0.0",
+  "description": "googleTranslate",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run open && npm run server",
+    "server": "http-server ./public -a localhost -p 8000 -c-1",
+    "open": "start http://localhost:8000/"
+  },
+  "author": "james jomuad",
+  "license": "ISC"
+}
