@@ -1,7 +1,7 @@
 /*
 *   Ref: https://sites.google.com/site/tomihasa/google-language-codes
 */
-;(function($){
+;(function(w,$){
     "use strict";
     var settings;
 
@@ -158,10 +158,9 @@
         }, options );
 
         $.fn.googleTranslate.init();
-        console.log($(this))
-        console.log(settings)
-        $(this).after($.fn.googleTranslate.build())
+        $(this).after($.fn.googleTranslate.build());
         $(this).remove();
+        $.fn.googleTranslate.events();
     };
 
     $.fn.googleTranslate.helper = {
@@ -182,7 +181,7 @@
         else
         {
             $("body").append($('<div id="googleTranslator"></div>'))
-            this.gTransInit = function(){
+            w.gTransInit = function(){
                 new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false}, 'googleTranslator');
             }
             $.getScript('//translate.google.com/translate_a/element.js?cb=gTransInit')
@@ -192,7 +191,8 @@
     $.fn.googleTranslate.events = function(){
         $(".translation-links a").click(function (){
             var lang = $(this).data("lang"),n = $(".goog-te-menu-frame:first");
-            return n.size() ? (n.contents().find(".goog-te-menu2-item span.text:contains(" + lang + ")").get(0).click(), !1) : (alert("Error: Could not find Google translate frame."), !1)
+            console.log(n)
+            return n.length ? (n.contents().find(".goog-te-menu2-item span.text:contains(" + lang + ")").get(0).click(), !1) : (alert("Error: Could not find Google translate frame."), !1)
         });
     }
 
@@ -202,28 +202,34 @@
         </div>`);
         var $list = '<li><a href="#" data-lang="{{lang}}">{{label}}</a></li>';
         var $ul = $htm.find('ul');
-
         $ul.on('updatedList',function ( event, data ) {
             var list = $.map( data, function ( v ) {
                 return $list.replace( /{{label}}/, v.label ).replace( /{{lang}}/, v.lang );
             });
             $ul.html(list);
         })
-        
-        console.log(settings.lang.constructor==Array)
-        
-        // if(typeof settings.lang=='object')
-        // var getOptions = $.map(settings.lang,function(v){
-        //     return {
-        //         lang:v,
-        //         label:settings.languages[v]
-        //     };
-        // })
-
-        // $ul.trigger( "updatedList", [getOptions]);
-
+        $ul.trigger( "updatedList", [ $.fn.googleTranslate.getLang()]);
         return $htm;
     }
 
+    $.fn.googleTranslate.getLang = function(){
+        var Lang = null;
+        if(settings.lang.constructor===Array)
+            Lang = $.map(settings.lang,function(v){
+                return {
+                    lang:v,
+                    label:settings.languages[v]
+                };
+            })
+        else if(settings.lang.constructor===Object)
+            Lang = $.map(settings.lang,function(v,k){
+                return {
+                    lang: settings.languages[k],
+                    label: v
+                };
+            })
+        return Lang;
+    }
+
     return this;
-})(jQuery)
+})(window,jQuery)
