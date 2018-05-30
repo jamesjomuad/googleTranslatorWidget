@@ -3,9 +3,9 @@
 */
 ;(function(w,$){
     "use strict";
-    var settings;
+    var self,settings;
 
-    $.fn.googleTranslate = function(options){
+    self = function(options){
         settings = $.extend({
             // default options.
             default:'en',
@@ -157,13 +157,16 @@
             }
         }, options );
 
-        $.fn.googleTranslate.init();
-        $(this).after($.fn.googleTranslate.build());
+        self.init();
+        $(this).after(self.build());
         $(this).remove();
-        $.fn.googleTranslate.events();
+        self.events();
+        self.css();
     };
 
-    $.fn.googleTranslate.helper = {
+    $.fn.googleTranslate = self;
+
+    self.helper = {
         strRand: function(){
             return Math.random().toString(30).substring(7);
         },
@@ -175,12 +178,13 @@
         }
     };
 
-    $.fn.googleTranslate.init = function(){
+    self.init = function(){
         if($('iframe.goog-te-menu-frame').length)
             console.log('Google translator already loaded!')
         else
         {
-            $("body").append($('<div id="googleTranslator"></div>'))
+            self.wrapper = $('<div id="googleTranslator"></div>').hide();
+            $("body").append(self.wrapper);
             w.gTransInit = function(){
                 new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false}, 'googleTranslator');
             }
@@ -188,7 +192,7 @@
         }
     };
 
-    $.fn.googleTranslate.events = function(){
+    self.events = function(){
         $(".translation-links a").click(function (){
             var lang = $(this).data("lang"),n = $(".goog-te-menu-frame:first");
             console.log(n)
@@ -196,8 +200,8 @@
         });
     }
 
-    $.fn.googleTranslate.build = function(){
-        var $htm = $(`<div class="dropdown lang-menu translation-links">
+    self.build = function(){
+        var $htm = $(`<div class="dropdown lang-menu translation-links notranslate">
             <button class="dropdown-toggle btn btn-default btn-sm" type="button" id="googleTranslateDrop" data-toggle="dropdown" aria-haspopup="true"aria-expanded="true">EN<i class="icon ion-chevron-down"></i></button><ul class="dropdown-menu" aria-labelledby="googleTranslateDrop"></ul>
         </div>`);
         var $list = '<li><a href="#" data-lang="{{lang}}">{{label}}</a></li>';
@@ -208,11 +212,11 @@
             });
             $ul.html(list);
         })
-        $ul.trigger( "updatedList", [ $.fn.googleTranslate.getLang()]);
+        $ul.trigger( "updatedList", [self.getLang()]);
         return $htm;
     }
 
-    $.fn.googleTranslate.getLang = function(){
+    self.getLang = function(){
         var Lang = null;
         if(settings.lang.constructor===Array)
             Lang = $.map(settings.lang,function(v){
@@ -229,6 +233,16 @@
                 };
             })
         return Lang;
+    }
+
+    self.css = function(){
+        $("body").append($(`
+        <style id=`+self.helper.strRand()+`>
+            .goog-te-banner-frame.skiptranslate {display: none !important;} 
+            body {top: 0px !important;}
+        </style>`));
+
+        return this;
     }
 
     return this;
